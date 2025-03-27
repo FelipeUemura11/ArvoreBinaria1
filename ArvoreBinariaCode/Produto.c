@@ -118,6 +118,15 @@ void alterarProduto(struct No **raiz, int produtoId){
 
 }
 
+void somaTotal(struct No *raiz, float *soma) {
+    if (raiz != NULL) {
+        float precoQuant = (raiz->produto.preco) * (raiz->produto.quantidade);
+        *soma += precoQuant;
+        somaTotal(raiz->esq, soma);
+        somaTotal(raiz->dir, soma);
+    }
+}
+
 void liberarMemoriaArvore(struct No *raiz) {
     if (raiz != NULL) {
         liberarMemoriaArvore(raiz->esq);
@@ -130,6 +139,7 @@ int main(void) {
     struct No *raiz = NULL;
     struct Produto produto;
     int opcao = -1, idBuscar, idRemover, idAlterar;
+    float soma = 0.0;
     while (opcao != 0) {
         printf("\n == Produto == \n");
         printf(" [1] Inserir \n");
@@ -137,6 +147,7 @@ int main(void) {
         printf(" [3] Remover \n");
         printf(" [4] inOrder \n");
         printf(" [5] Alterar \n");
+        printf(" [6] SomaTotal(prec/quant) \n");
         printf(" [0] Sair \n");
         printf("Informe uma opcao: ");
         if (scanf("%i", &opcao) != 1) {
@@ -190,6 +201,11 @@ int main(void) {
                 scanf("%i", &idAlterar);
                 
                 alterarProduto(&raiz, idAlterar);
+                break;
+            case 6:
+                printf("Soma total dos precos e quantidade: \n");
+                somaTotal(raiz, &soma);
+                printf("Total: %.2f\n", soma);
                 break;
             case 0:
                 break;

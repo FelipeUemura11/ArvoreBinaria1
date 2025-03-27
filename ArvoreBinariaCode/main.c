@@ -74,40 +74,40 @@ void posOrder(struct No *raiz){
     }
 }
 
-int remover(struct No **raiz, int remocao){
-
-    if(*raiz == NULL){
-        printf("Nao ah noh [%i] na arvore.\n", remocao);
+int remover(struct No **raiz, int remocao) {
+    if (*raiz == NULL) {
+        printf("Valor [%i] não encontrado na árvore.\n", remocao);
         return 1;
     }
-
-    if(remocao < (*raiz)->valor){
+    if (remocao < (*raiz)->valor) {
         return remover(&((*raiz)->esq), remocao);
-    }else if(remocao > (*raiz)->valor){
+    } else if (remocao > (*raiz)->valor) {
         return remover(&((*raiz)->dir), remocao);
-    }else{
+    } else {
         struct No *temp = *raiz;
-
-        if(temp->esq == NULL && temp->dir == NULL){
+        if (temp->esq == NULL && temp->dir == NULL) {
             free(temp);
             *raiz = NULL;
-        }else if(temp->esq == NULL){
+        } else if (temp->esq == NULL) {
             *raiz = temp->dir;
             free(temp);
-        }else if(temp->dir == NULL){
+        } else if (temp->dir == NULL) {
             *raiz = temp->esq;
             free(temp);
-        }else{
-            // Encontrar o menor valor da subArvore direita
+        } else {
             struct No *aux = temp->dir;
-            while(aux->esq != NULL){
+            struct No *paiAux = temp;
+            while (aux->esq != NULL) {
+                paiAux = aux;
                 aux = aux->esq;
             }
-
             temp->valor = aux->valor;
-            remover(&(temp->dir), aux->valor); // recursao para recomecar a leitura ate encontrar o valor
-
-            
+            if (paiAux->esq == aux) {
+                paiAux->esq = aux->dir;
+            } else {
+                paiAux->dir = aux->dir;
+            }
+            free(aux);
         }
         printf("Valor [%i] removido.\n", remocao);
         return 0;

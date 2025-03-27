@@ -173,5 +173,4 @@ int main(void) {
     }
 
     liberarArvore(raiz);
-    return 0;
 }

@@ -37,13 +37,13 @@ struct No *desenfileirar(struct FilaLarg **inicio, struct FilaLarg **fim) {
     return no;
 }
 
-int arvoreCompleta(struct No **raiz) {
-    if (*raiz == NULL) {
+int arvoreCompleta(struct No *raiz) {
+    if (raiz == NULL) {
         return 1;
     }
 
     struct FilaLarg *inicio = NULL, *fim = NULL;
-    enfileirar(&inicio, &fim, *raiz);
+    enfileirar(&inicio, &fim, raiz);
     bool encontrouNulo = false;
 
     while (inicio != NULL) {
@@ -221,18 +221,20 @@ int valorMaximo(struct No *raiz){
     return raiz->valor;
 }
 
-void somaTotal(struct No *raiz, int *soma){
-
-    if(raiz == NULL){
-        printf("Sem nos na arvore!\n");
-    }else{
-
+void somaTotal(struct No *raiz, int *soma) {
+    if (raiz != NULL) {
         *soma += raiz->valor;
-
         somaTotal(raiz->esq, soma);
         somaTotal(raiz->dir, soma);
     }
+}
 
+void liberarMemoriaArvore(struct No *raiz) {
+    if (raiz != NULL) {
+        liberarMemoriaArvore(raiz->esq);
+        liberarMemoriaArvore(raiz->dir);
+        free(raiz);
+    }
 }
 
 int main(){
@@ -279,7 +281,7 @@ int main(){
                 arvoreBalanceada(&raiz);
                 break;
             case 6:
-                if(arvoreCompleta(&raiz)) {
+                if(arvoreCompleta(raiz)) {
                     printf("A arvore eh completa!\n");
                 } else {
                     printf("A arvore NAO eh completa.\n");
@@ -299,6 +301,7 @@ int main(){
                 break;
             case 0:
                 printf("saindo...\n");
+                liberarMemoriaArvore(raiz);
                 break;
             default:
                 printf("ERROR : Escolha uma opcao valida!\n");

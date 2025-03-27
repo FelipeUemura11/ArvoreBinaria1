@@ -91,6 +91,33 @@ void inOrder(struct No *raiz) {
     }
 }
 
+void alterarProduto(struct No **raiz, int produtoId){
+
+    int novaQuant = 0;
+    float novoPreco = 0.0;
+
+    struct No *encontrado = buscarProduto(*raiz, produtoId);
+    if(encontrado != NULL){
+        printf("Informe o novo preco do produto %s: ", encontrado->produto.nome);
+        scanf("%f", &novoPreco);
+        encontrado->produto.preco = novoPreco;
+        printf("Informe a nova quantidade do produto %s: ", encontrado->produto.nome);
+        scanf("%i", &novaQuant);
+        encontrado->produto.quantidade = novaQuant;
+
+        printf("\n=============\n");
+        printf("Produto Atualizado!\n");
+        printf("Id: %i\n", encontrado->produto.id);
+        printf("Nome: %s\n", encontrado->produto.nome);
+        printf("Preco: %.2f\n", encontrado->produto.preco);
+        printf("Quantidade: %i\n", encontrado->produto.quantidade);
+        printf("=============\n");
+    }else{
+        printf("Produto nao encontrado...\n");
+    }
+
+}
+
 void liberarMemoriaArvore(struct No *raiz) {
     if (raiz != NULL) {
         liberarMemoriaArvore(raiz->esq);
@@ -102,13 +129,14 @@ void liberarMemoriaArvore(struct No *raiz) {
 int main(void) {
     struct No *raiz = NULL;
     struct Produto produto;
-    int opcao = -1, idBuscar, idRemover;
+    int opcao = -1, idBuscar, idRemover, idAlterar;
     while (opcao != 0) {
         printf("\n == Produto == \n");
         printf(" [1] Inserir \n");
         printf(" [2] Buscar \n");
         printf(" [3] Remover \n");
         printf(" [4] inOrder \n");
+        printf(" [5] Alterar \n");
         printf(" [0] Sair \n");
         printf("Informe uma opcao: ");
         if (scanf("%i", &opcao) != 1) {
@@ -156,6 +184,12 @@ int main(void) {
                 break;
             case 4:
                 inOrder(raiz);
+                break;
+            case 5:
+                printf("Digite o id do produto que deseje alterar: ");
+                scanf("%i", &idAlterar);
+                
+                alterarProduto(&raiz, idAlterar);
                 break;
             case 0:
                 break;

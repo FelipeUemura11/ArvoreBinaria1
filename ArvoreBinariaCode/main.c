@@ -115,6 +115,14 @@ int remover(struct No **raiz, int remocao) {
 
 }
 
+void liberarMemoriaArvore(struct No *raiz) {
+    if (raiz != NULL) {
+        liberarMemoriaArvore(raiz->esq);
+        liberarMemoriaArvore(raiz->dir);
+        free(raiz);
+    }
+}
+
 int main(void){
 
     int valor, busca, remocao, opcao = -1;
@@ -162,6 +170,7 @@ int main(void){
                 remover(&raiz, remocao);
                 break;
             case 0:
+                liberarMemoriaArvore(raiz);
                 break;
             default:
                 printf("Informe uma opcao valida!.\n");
